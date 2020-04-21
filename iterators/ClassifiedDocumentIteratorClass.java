@@ -3,9 +3,19 @@ package iterators;
 import documents.Document;
 import documents.ClassifiedDocument;
 
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Classified document iterator.
+ */
+
 public class ClassifiedDocumentIteratorClass extends AbstractDocumentIterator implements ClassifiedDocumentIterator {
 	
-	/* Constructor */
+	/**
+	 * Constructor.
+	 * @param documents Document array to iterate.
+	 * @param numDocuments Number of documents in the array.
+	 */
 	public ClassifiedDocumentIteratorClass(Document[] documents, int numDocuments) {
 		super(documents, numDocuments);
 	}
@@ -15,7 +25,7 @@ public class ClassifiedDocumentIteratorClass extends AbstractDocumentIterator im
 	 */
 	@Override
 	public boolean hasNext() {
-		while (nextDocument < documents.length) {
+		while (nextDocument < numDocuments) {
 			if (!(documents[nextDocument] instanceof ClassifiedDocument)) {
 				nextDocument++;
 			}

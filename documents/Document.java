@@ -3,6 +3,12 @@ package documents;
 import iterators.AccessIterator;
 import users.User;
 
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * A document with various properties and a history of accesses from users.
+ */
+
 public interface Document {
 	
 	/**
@@ -19,13 +25,6 @@ public interface Document {
 	 * @return The documents' description.
 	 */
 	String getDescription();
-	
-	/**
-	 * Edits the documents' description.
-	 * @param user The user editing the document.
-	 * @param description The new documents' description.
-	 */
-	void writeDocument(User user, String description);
 	
 	/**
 	 * Obtains the description from a specified document.

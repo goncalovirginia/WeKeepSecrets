@@ -4,19 +4,25 @@ import Accesses.AccessCollection;
 import Accesses.AccessCollectionClass;
 import Accesses.AccessType;
 import iterators.AccessIterator;
-import iterators.AccessIteratorClass;
 import users.User;
+
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * A document with various properties and a history of accesses from users.
+ */
 
 public abstract class AbstractDocument implements Document {
 	
 	
 	/* Variables */
-	private String name, owner, level;
+	private String name, level;
+	private User owner;
 	protected String description;
 	protected AccessCollection accesses;
 	
 	/* Constructor */
-	protected AbstractDocument(String name, String owner, String level, String description) {
+	protected AbstractDocument(String name, User owner, String level, String description) {
 		this.name = name;
 		this.owner = owner;
 		this.level = level;
@@ -37,7 +43,7 @@ public abstract class AbstractDocument implements Document {
 	 */
 	@Override
 	public String getOwner() {
-		return owner;
+		return owner.getId();
 	}
 	
 	/**
@@ -54,17 +60,6 @@ public abstract class AbstractDocument implements Document {
 	@Override
 	public String getDescription() {
 		return description;
-	}
-	
-	/**
-	 * Edits the documents' description and adds a new user access.
-	 * @param user The user editing the document.
-	 * @param description The new documents' description.
-	 */
-	@Override
-	public void writeDocument(User user, String description) {
-		accesses.newAccess(user, AccessType.WRITE);
-		this.description = description;
 	}
 	
 	/**

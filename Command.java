@@ -1,3 +1,11 @@
+
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Contains all the existing user input commands and their corresponding descriptions,
+ * which enables them to be saved, added and listed in a more organized manner.
+ */
+
 public enum Command {
 	
 	/* Input Commands */
@@ -14,12 +22,19 @@ public enum Command {
 	HELP("shows the available commands"),
 	EXIT("terminates the execution of the program");
 	
-	private final String description;
+	private final String description; //The commands description.
 	
-	private Command(String description) {
+	/**
+	 * Constructor.
+	 * @param description The commands' description.
+	 */
+	Command(String description) {
 		this.description = description;
 	}
 	
+	/**
+	 * @return The commands' description.
+	 */
 	public String getDescription() {
 		return description;
 	}

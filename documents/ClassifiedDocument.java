@@ -4,6 +4,12 @@ import iterators.AccessIterator;
 import users.Officer;
 import users.User;
 
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * A type of document with high security clearance, which concedes it various other properties.
+ */
+
 public interface ClassifiedDocument extends Document {
 	
 	/**
@@ -15,6 +21,13 @@ public interface ClassifiedDocument extends Document {
 	 * @return Number of times the document has been revoked.
 	 */
 	int getNumRevokes();
+	
+	/**
+	 * Edits the documents' description and adds a new user access.
+	 * @param user The user editing the document.
+	 * @param description The new documents' description.
+	 */
+	void writeDocument(User user, String description);
 	
 	/**
 	 * @return True if the specified user has been granted access to the document.

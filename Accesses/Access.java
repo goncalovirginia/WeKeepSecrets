@@ -2,6 +2,12 @@ package Accesses;
 
 import users.User;
 
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Saves a user and and an access type.
+ */
+
 public interface Access {
 	
 	/**

@@ -1,12 +1,21 @@
 package iterators;
 
-import documents.ClassifiedDocument;
 import documents.Document;
 import documents.OfficialDocument;
 
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Official document iterator.
+ */
+
 public class OfficialDocumentIteratorClass extends AbstractDocumentIterator implements OfficialDocumentIterator {
 	
-	/* Constructor */
+	/**
+	 * Constructor.
+	 * @param documents Document array to iterate.
+	 * @param numDocuments Number of documents in the array.
+	 */
 	public OfficialDocumentIteratorClass(Document[] documents, int numDocuments) {
 		super(documents, numDocuments);
 	}
@@ -16,7 +25,7 @@ public class OfficialDocumentIteratorClass extends AbstractDocumentIterator impl
 	 */
 	@Override
 	public boolean hasNext() {
-		while (nextDocument < documents.length) {
+		while (nextDocument < numDocuments) {
 			if (!(documents[nextDocument] instanceof OfficialDocument)) {
 				nextDocument++;
 			}

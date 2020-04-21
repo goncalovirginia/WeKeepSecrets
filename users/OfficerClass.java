@@ -1,8 +1,12 @@
 package users;
 
 import iterators.ClassifiedDocumentIterator;
-import iterators.ClassifiedDocumentIteratorClass;
-import iterators.DocumentIterator;
+
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Type of user with high security clearance, which concedes it various other properties.
+ */
 
 public class OfficerClass extends AbstractUser implements Officer {
 	
@@ -28,6 +32,28 @@ public class OfficerClass extends AbstractUser implements Officer {
 	@Override
 	public int getNumRevokes() {
 		return numRevokes;
+	}
+	
+	/**
+	 * Edits the specified documents' description.
+	 * @param user The user editing the document.
+	 * @param documentName The documents' name.
+	 * @param description The documents' description.
+	 */
+	@Override
+	public void writeDocument(User user, String documentName, String description) {
+		documents.writeDocument(user, documentName, description);
+	}
+	
+	/**
+	 * Checks if the specified user has clearance to access the document.
+	 * @param user The user who wants to access the document.
+	 * @param documentName The documents' name.
+	 * @return True if the user has clearance.
+	 */
+	@Override
+	public boolean userHasClearance(Officer user, String documentName) {
+		return documents.userHasClearance(user, documentName);
 	}
 	
 	/**

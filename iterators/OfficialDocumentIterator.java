@@ -2,12 +2,13 @@ package iterators;
 
 import documents.OfficialDocument;
 
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Official document iterator.
+ */
+
 public interface OfficialDocumentIterator extends DocumentIterator {
-	
-	/**
-	 * @return True if the is another document to be iterated.
-	 */
-	boolean hasNext();
 	
 	/**
 	 * @return The next document to be iterated.

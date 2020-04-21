@@ -2,6 +2,12 @@ package users;
 
 import iterators.*;
 
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Manages a collection of users with their corresponding documents.
+ */
+
 public interface UserCollection {
 	
 	/**
@@ -22,13 +28,14 @@ public interface UserCollection {
 	/**
 	 * Creates a new document which is managed by a user with sufficient clearance.
 	 * @param documentName The documents' name.
-	 * @param userId The users' ID.
+	 * @param userId The document owners' ID.
 	 * @param documentLevel The documents' clearance level.
+	 * @param documentDescription The documents' description.
 	 */
 	void uploadDocument(String documentName, String userId, String documentLevel, String documentDescription);
 	
 	/**
-	 * Checks if the specified user is already managing a document with the same name.
+	 * Checks if the specified user is already managing a document with the following name.
 	 * @param userId The users' ID.
 	 * @param documentName The documents' name.
 	 * @return True if the user is already managing a document with the same name.
@@ -45,20 +52,20 @@ public interface UserCollection {
 	
 	/**
 	 * Checks if the specified document has a classified clearance level.
-	 * @param userIdOwner The document owners' ID.
+	 * @param userId The document owners' ID.
 	 * @param documentName The documents' name.
 	 * @return True if the document has a classified clearance level.
 	 */
-	boolean documentIsClassified(String userIdOwner, String documentName);
+	boolean documentIsClassified(String userId, String documentName);
 	
 	/**
 	 * Checks if the specified user has sufficient clearance to access a certain document.
-	 * @param userIdWriter The writers' ID.
+	 * @param userIdAccess ID of the user trying to access the document.
 	 * @param userIdOwner The document owners' ID.
 	 * @param documentName The documents' name.
 	 * @return True if the user has sufficient clearance.
 	 */
-	boolean userHasClearance(String userIdWriter, String userIdOwner, String documentName);
+	boolean userHasClearance(String userIdAccess, String userIdOwner, String documentName);
 	
 	/**
 	 * Enables a user to edit a specific documents' description.
@@ -96,7 +103,7 @@ public interface UserCollection {
 	/**
 	 * Checks if the specified user had a grant to a certain document already revoked.
 	 * @param userIdRevoke The users' ID.
-	 * @param userIdOwner
+	 * @param userIdOwner The document owners' ID.
 	 * @param documentName The documents' name.
 	 * @return True if the user had the grant to the document already revoked.
 	 */
@@ -119,10 +126,15 @@ public interface UserCollection {
 	
 	/**
 	 * @param userId The users' ID.
-	 * @param documentLevel The documents' clearance level.
-	 * @return New user document iterator.
+	 * @return New users' official documents iterator.
 	 */
-	DocumentIterator newUserDocumentsIterator(String userId, String documentLevel);
+	OfficialDocumentIterator newUserOfficialDocumentsIterator(String userId);
+	
+	/**
+	 * @param userId The users' ID.
+	 * @return New users' classified documents iterator.
+	 */
+	ClassifiedDocumentIterator newUserClassifiedDocumentsIterator(String userId);
 	
 	/**
 	 * @return New top leaked documents iterator.
@@ -132,10 +144,6 @@ public interface UserCollection {
 	/**
 	 * @return New top granters iterator.
 	 */
-	UserIterator newTopGrantersIterator();
-	
-	
-	
-	
+	OfficerIterator newTopGrantersIterator();
 	
 }

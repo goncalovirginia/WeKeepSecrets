@@ -2,6 +2,12 @@ package iterators;
 
 import users.User;
 
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Generic user iterator.
+ */
+
 public interface UserIterator {
 	
 	/**

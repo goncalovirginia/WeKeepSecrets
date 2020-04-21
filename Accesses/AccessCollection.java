@@ -3,6 +3,12 @@ package Accesses;
 import iterators.AccessIterator;
 import users.User;
 
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Manages a collection of accesses.
+ */
+
 public interface AccessCollection {
 	
 	/**

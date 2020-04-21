@@ -2,6 +2,12 @@ package iterators;
 
 import Accesses.Access;
 
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Generic access iterator.
+ */
+
 public interface AccessIterator {
 	
 	/**

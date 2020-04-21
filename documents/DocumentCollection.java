@@ -1,10 +1,15 @@
 package documents;
 
 import iterators.ClassifiedDocumentIterator;
-import iterators.DocumentIterator;
 import iterators.OfficialDocumentIterator;
 import users.Officer;
 import users.User;
+
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Manages a collection of documents with various types of security levels.
+ */
 
 public interface DocumentCollection {
 	
@@ -33,7 +38,7 @@ public interface DocumentCollection {
 	 * @param documentName The documents' name.
 	 * @return True if the user has clearance.
 	 */
-	boolean userHasClearance(User user, String documentName);
+	boolean userHasClearance(Officer user, String documentName);
 	
 	/**
 	 * Uploads a new document with the following characteristics:
@@ -41,7 +46,7 @@ public interface DocumentCollection {
 	 * @param documentLevel The document's clearance level.
 	 * @param documentDescription The documents' description.
 	 */
-	void uploadDocument(String documentName, String userIdOwner, String documentLevel, String documentDescription);
+	void uploadDocument(String documentName, User owner, String documentLevel, String documentDescription);
 	
 	/**
 	 * Edits the specified documents' description.

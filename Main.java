@@ -10,6 +10,9 @@ import Accesses.Access;
 
 /**
  * @author Goncalo Virginia - 56773
+ *
+ * This program manages the interactions between various types of documents and users with security
+ * concerns for a governmental organisation.
  */
 public class Main {
 	
@@ -42,8 +45,7 @@ public class Main {
 	private static final String EXITING = "Bye!";
 	
 	/**
-	 * Reads input commands repeatedly until the exit command is inputted.
-	 *
+	 * Reads and executes input commands repeatedly until the EXIT command is introduced.
 	 * @param args Arguments used for the execution of the program (not used).
 	 */
 	public static void main(String[] args) {
@@ -66,7 +68,7 @@ public class Main {
 	
 	/**
 	 * Interprets and executes commands.
-	 * @param command Command inputted by the user.
+	 * @param command Command introduced by the user.
 	 * @param in Input scanner.
 	 * @param secretManager Manages and controls the interactions between users and documents.
 	 */
@@ -137,7 +139,7 @@ public class Main {
 	}
 	
 	/**
-	 * Reads and checks the parameters required to register a new user.
+	 * Reads and checks the parameters in order to register a new user.
 	 * @param in Input scanner.
 	 * @param secretManager Manages and controls the interactions between users and documents.
 	 */
@@ -175,7 +177,7 @@ public class Main {
 	}
 	
 	/**
-	 * Reads and checks the parameters required to upload a new document.
+	 * Reads and checks the parameters in order to upload a new document.
 	 * @param in Input scanner.
 	 * @param secretManager Manages and controls the interactions between users and documents.
 	 */
@@ -201,7 +203,7 @@ public class Main {
 	}
 	
 	/**
-	 * Reads and checks the parameters required to edit a documents' description.
+	 * Reads and checks the parameters in order to edit a documents' description.
 	 * @param in Input scanner.
 	 * @param secretManager Manages and controls the interactions between users and documents.
 	 */
@@ -230,7 +232,7 @@ public class Main {
 	}
 	
 	/**
-	 * Reads and checks the parameters required to output a documents' description.
+	 * Reads and checks the parameters in order to output a documents' description.
 	 * @param in Input scanner.
 	 * @param secretManager Manages and controls the interactions between users and documents.
 	 */
@@ -255,7 +257,7 @@ public class Main {
 	}
 	
 	/**
-	 * Reads and checks the parameters required for a user to grant clearance to another user.
+	 * Reads and checks the parameters in order for a user to grant clearance to another user.
 	 * @param in Input scanner.
 	 * @param secretManager Manages and controls the interactions between users and documents.
 	 */
@@ -284,7 +286,7 @@ public class Main {
 	}
 	
 	/**
-	 * Reads and checks the parameters required for a user to revoke the clearance granted to another user.
+	 * Reads and checks the parameters in order for a user to revoke the clearance granted to another user.
 	 * @param in Input scanner.
 	 * @param secretManager Manages and controls the interactions between users and documents.
 	 */
@@ -317,7 +319,7 @@ public class Main {
 	}
 	
 	/**
-	 * Reads and checks the parameters required to list a users' documents (of a certain clearance level).
+	 * Reads and checks the parameters in order to list a users' documents (of a certain clearance level).
 	 * @param in Input scanner.
 	 * @param secretManager Manages and controls the interactions between users and documents.
 	 */
@@ -329,69 +331,51 @@ public class Main {
 		if (!secretManager.userExists(userId)) {
 			System.out.println(NOT_REGISTERED_USER);
 		}
-		else if (!secretManager.userHasLevel(userId, documentType)) {
+		else if (!secretManager.userIsOfficer(userId) && secretManager.isClassified(documentType)) {
 			System.out.println(INAPPROPRIATE_SECURITY_LEVEL);
 		}
 		else {
-			DocumentIterator documents = secretManager.newUserDocumentsIterator(userId, documentType);
-			
 			if (!secretManager.isClassified(documentType)) {
-				
-				if (!documents.hasNext()) {
-					System.out.println(NO_OFFICIAL_DOCUMENTS);
-				}
-				else {
-					while (documents.hasNext()) {
-						Document document = documents.next();
-						System.out.printf("%s %d: ", document.getName(), document.getNumAccesses());
-						
-						AccessIterator accesses = document.newReverseAccessIterator();
-						
-						if (!accesses.hasNext()) {
-							System.out.println(NO_ACCESSES);
-						}
-						else {
-							while (accesses.hasNext()) {
-								Access access = accesses.next();
-								
-								System.out.printf("%s [%s]", access.getUser().getId(), access.getUser().getLevel());
-								
-								if (accesses.hasNext()) {
-									System.out.print(", ");
-								}
-								else {
-									System.out.println();
-								}
-							}
-						}
-					}
-				}
+				officialDocumentAccesses(userId, secretManager);
 			}
 			else {
-				if (!documents.hasNext()) {
-					System.out.println(NO_CLASSIFIED_DOCUMENTS);
+				classifiedDocumentAccesses(userId, secretManager);
+			}
+		}
+	}
+	
+	/**
+	 * Auxiliary method for 'listUserDocuments'. Lists all accesses of a certain type.
+	 * @param userId The document owners' ID.
+	 * @param secretManager Manages and controls the interactions between users and documents.
+	 */
+	private static void officialDocumentAccesses(String userId, SecretManager secretManager) {
+		OfficialDocumentIterator documents = secretManager.newUserOfficialDocumentsIterator(userId);
+		
+		if (!documents.hasNext()) {
+			System.out.println(NO_OFFICIAL_DOCUMENTS);
+		}
+		else {
+			while (documents.hasNext()) {
+				Document document = documents.next();
+				System.out.printf("%s %d: ", document.getName(), document.getNumAccesses());
+				
+				AccessIterator accesses = document.newReverseAccessIterator();
+				
+				if (!accesses.hasNext()) {
+					System.out.println(NO_ACCESSES);
 				}
 				else {
-					while (documents.hasNext()) {
-						ClassifiedDocument document = (ClassifiedDocument) documents.next();
-						System.out.printf("%s %s %d\n", document.getName(), document.getLevel(), document.getNumAccesses());
+					while (accesses.hasNext()) {
+						Access access = accesses.next();
 						
-						AccessIterator accesses = document.newAccessIterator();
+						System.out.printf("%s [%s]", access.getUser().getId(), access.getUser().getLevel());
 						
-						if (!accesses.hasNext()) {
-							System.out.println(NO_ACCESSES);
+						if (accesses.hasNext()) {
+							System.out.print(", ");
 						}
 						else {
-							printAccesses(accesses);
-						}
-						
-						AccessIterator grants = document.newGrantIterator();
-						
-						if (!grants.hasNext()) {
-							System.out.println(NO_GRANTS);
-						}
-						else {
-							printAccesses(grants);
+							System.out.println();
 						}
 					}
 				}
@@ -401,7 +385,44 @@ public class Main {
 	
 	/**
 	 * Auxiliary method for 'listUserDocuments'. Lists all accesses of a certain type.
-	 * @param accesses Access list to iterate.
+	 * @param userId The document owners' ID.
+	 * @param secretManager Manages and controls the interactions between users and documents.
+	 */
+	private static void classifiedDocumentAccesses(String userId, SecretManager secretManager) {
+		ClassifiedDocumentIterator documents = secretManager.newUserClassifiedDocumentsIterator(userId);
+		
+		if (!documents.hasNext()) {
+			System.out.println(NO_CLASSIFIED_DOCUMENTS);
+		}
+		else {
+			while (documents.hasNext()) {
+				ClassifiedDocument document = documents.next();
+				System.out.printf("%s %s %d\n", document.getName(), document.getLevel(), document.getNumAccesses());
+				
+				AccessIterator accesses = document.newAccessIterator();
+				
+				if (!accesses.hasNext()) {
+					System.out.println(NO_ACCESSES);
+				}
+				else {
+					printAccesses(accesses);
+				}
+				
+				AccessIterator grants = document.newGrantIterator();
+				
+				if (!grants.hasNext()) {
+					System.out.println(NO_GRANTS);
+				}
+				else {
+					printAccesses(grants);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Auxiliary method for 'classifiedDocumentAccesses'. Lists all accesses of a certain type.
+	 * @param accesses Accesses to iterate.
 	 */
 	private static void printAccesses(AccessIterator accesses) {
 		while (accesses.hasNext()) {
@@ -442,14 +463,14 @@ public class Main {
 	 * @param secretManager Manages and controls the interactions between users and documents.
 	 */
 	private static void listTopGranters(SecretManager secretManager) {
-		UserIterator granters = secretManager.newTopGrantersIterator();
+		OfficerIterator granters = secretManager.newTopGrantersIterator();
 		
 		if (!granters.hasNext()) {
 			System.out.println(NO_GRANTS_GIVEN);
 		}
 		else {
 			while (granters.hasNext()) {
-				Officer granter = (Officer) granters.next();
+				Officer granter = granters.next();
 				System.out.println(granter.getId() + " " + granter.getLevel() + " " + granter.getNumDocuments() +
 						" " + granter.getNumGrants() + " " + granter.getNumRevokes());
 			}

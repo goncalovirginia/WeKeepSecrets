@@ -3,6 +3,13 @@ package secrets;
 import iterators.*;
 import users.*;
 
+/**
+ * @author Goncalo Virginia - 56773.
+ *
+ * Serves as a middleman to the Main and UserCollectionClass classes.
+ * Verifies certain preconditions for the Main class in order to execute methods in the UserCollectionClass.
+ */
+
 public class SecretManagerClass implements SecretManager {
 	
 	/* Variables */
@@ -18,6 +25,8 @@ public class SecretManagerClass implements SecretManager {
 	 * @param type The users' type.
 	 * @param userId The users' ID.
 	 * @param level The users' clearance level.
+	 * @pre type == "clerk" || type == "officer" && userId != null && level == "official" || level == "confidential" ||
+	 * level == "secret" || level == "topsecret".
 	 */
 	@Override
 	public void registerUser(String type, String userId, String level) {
@@ -28,6 +37,7 @@ public class SecretManagerClass implements SecretManager {
 	 * Checks if a user with the specified ID exists.
 	 * @param userId The users' ID.
 	 * @return True if a user with the specified ID exists.
+	 * @pre userId != null.
 	 */
 	@Override
 	public boolean userExists(String userId) {
@@ -40,6 +50,8 @@ public class SecretManagerClass implements SecretManager {
 	 * @param userIdOwner The users' ID.
 	 * @param documentLevel The documents' clearance level.
 	 * @param documentDescription The documents' description.
+	 * @pre documentName != null && userIdOwner != null && documentLevel == "official" || documentLevel == "confidential" ||
+	 * 	 * documentLevel == "secret" || documentLevel == "topsecret" && documentDescription != null.
 	 */
 	@Override
 	public void uploadDocument(String documentName, String userIdOwner, String documentLevel, String documentDescription) {
@@ -47,10 +59,11 @@ public class SecretManagerClass implements SecretManager {
 	}
 	
 	/**
-	 * Checks if the specified user is already managing a document with the same name.
+	 * Checks if the specified user is already managing a document with the following name.
 	 * @param userId The users' ID.
 	 * @param documentName The documents' name.
 	 * @return True if the user is already managing a document with the same name.
+	 * @pre userId != null && documentName != null.
 	 */
 	@Override
 	public boolean userHasDocument(String userId, String documentName) {
@@ -58,10 +71,12 @@ public class SecretManagerClass implements SecretManager {
 	}
 	
 	/**
-	 * Checks if a user has sufficient clearance to upload a document of that level.
+	 * Checks if a user has sufficient clearance to interact with a document of that level.
 	 * @param userId The users' ID.
 	 * @param documentLevel The documents' clearance level.
 	 * @return True if the user has sufficient clearance to upload the document.
+	 * @pre userId != null && documentLevel == "official" || documentLevel == "confidential" ||
+	 * documentLevel == "secret" || documentLevel == "topsecret".
 	 */
 	@Override
 	public boolean userHasLevel(String userId, String documentLevel) {
@@ -73,6 +88,7 @@ public class SecretManagerClass implements SecretManager {
 	 * @param userIdOwner The document owners' ID.
 	 * @param documentName The documents' name.
 	 * @return True if the document has a classified clearance level.
+	 * @pre userIdOwner != null && documentName != null.
 	 */
 	@Override
 	public boolean documentIsClassified(String userIdOwner, String documentName) {
@@ -85,6 +101,7 @@ public class SecretManagerClass implements SecretManager {
 	 * @param userIdOwner The document owners' ID.
 	 * @param documentName The documents' name.
 	 * @return True if the user has sufficient clearance.
+	 * @pre userIdAccess != null && userIdOwner != null && documentName != null.
 	 */
 	@Override
 	public boolean userHasClearance(String userIdAccess, String userIdOwner, String documentName) {
@@ -97,6 +114,7 @@ public class SecretManagerClass implements SecretManager {
 	 * @param userIdOwner The document owners' ID.
 	 * @param documentName The documents' name.
 	 * @param description The new document description.
+	 * @pre userIdWriter != null && userIdOwner != null && documentName != null && description != null.
 	 */
 	@Override
 	public void writeDocument(String userIdWriter, String userIdOwner, String documentName, String description) {
@@ -109,6 +127,7 @@ public class SecretManagerClass implements SecretManager {
 	 * @param userIdOwner The document owners' ID.
 	 * @param documentName The documents' name.
 	 * @return The documents' description.
+	 * @pre userIdReader != null && userIdOwner != null && documentName != null.
 	 */
 	@Override
 	public String readDocument(String userIdReader, String userIdOwner, String documentName) {
@@ -119,6 +138,7 @@ public class SecretManagerClass implements SecretManager {
 	 * Checks if the specified user is an officer.
 	 * @param userId The users' ID.
 	 * @return True if the user is an officer.
+	 * @pre userId != null.
 	 */
 	@Override
 	public boolean userIsOfficer(String userId) {
@@ -130,6 +150,7 @@ public class SecretManagerClass implements SecretManager {
 	 * @param userIdGrant The users' ID.
 	 * @param userIdOwner The document owners' ID.
 	 * @param documentName The documents' name.
+	 * @pre userIdGrant != null & userIdOwner != null && documentName != null.
 	 */
 	@Override
 	public void grantClearance(String userIdGrant, String userIdOwner, String documentName) {
@@ -142,6 +163,7 @@ public class SecretManagerClass implements SecretManager {
 	 * @param userIdOwner The document owners' ID.
 	 * @param documentName The documents' name.
 	 * @return True if the user had the grant to the document already revoked.
+	 * @pre userIdRevoke != null && userIdOwner != null && documentName != null.
 	 */
 	@Override
 	public boolean userHasGrantRevoked(String userIdRevoke, String userIdOwner, String documentName) {
@@ -151,8 +173,9 @@ public class SecretManagerClass implements SecretManager {
 	/**
 	 * Revokes a specified users' clearance to a certain document.
 	 * @param userIdRevoke The users' ID.
-	 * @param userIdOwner
+	 * @param userIdOwner The documentOwners' ID.
 	 * @param documentName The documents' name.
+	 * @pre userIdRevoke != null && userIdOwner != null && documentName != null.
 	 */
 	@Override
 	public void revokeClearance(String userIdRevoke, String userIdOwner, String documentName) {
@@ -161,12 +184,13 @@ public class SecretManagerClass implements SecretManager {
 	
 	/**
 	 * Checks if a certain clearance level is confidential.
-	 * @param level The clearance level to check.
+	 * @param documentType The documents' type.
 	 * @return True if the clearance level is confidential.
+	 * @pre level == "official"  || level == "classified".
 	 */
 	@Override
-	public boolean isClassified(String level) {
-		return level.equals("classified");
+	public boolean isClassified(String documentType) {
+		return documentType.equals("classified");
 	}
 	
 	/* Iterators */
@@ -181,12 +205,22 @@ public class SecretManagerClass implements SecretManager {
 	
 	/**
 	 * @param userId The users' ID.
-	 * @param documentType The documents' clearance level.
-	 * @return New user document iterator.
+	 * @return New users' official documents iterator.
+	 * @pre userId != null.
 	 */
 	@Override
-	public DocumentIterator newUserDocumentsIterator(String userId, String documentType) {
-		return users.newUserDocumentsIterator(userId, documentType);
+	public OfficialDocumentIterator newUserOfficialDocumentsIterator(String userId) {
+		return users.newUserOfficialDocumentsIterator(userId);
+	}
+	
+	/**
+	 * @param userId The users' ID.
+	 * @return New users' classified documents iterator.
+	 * @pre userId != null.
+	 */
+	@Override
+	public ClassifiedDocumentIterator newUserClassifiedDocumentsIterator(String userId) {
+		return users.newUserClassifiedDocumentsIterator(userId);
 	}
 	
 	/**
@@ -201,7 +235,7 @@ public class SecretManagerClass implements SecretManager {
 	 * @return New top granters iterator.
 	 */
 	@Override
-	public UserIterator newTopGrantersIterator() {
+	public OfficerIterator newTopGrantersIterator() {
 		return users.newTopGrantersIterator();
 	}
 }

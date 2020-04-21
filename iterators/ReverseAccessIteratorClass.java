@@ -2,6 +2,12 @@ package iterators;
 
 import Accesses.Access;
 
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Reverse access iterator (starts from the end of the array).
+ */
+
 public class ReverseAccessIteratorClass implements AccessIterator {
 	
 	/* Constants */
@@ -11,6 +17,11 @@ public class ReverseAccessIteratorClass implements AccessIterator {
 	private Access[] accesses;
 	private int numAccesses, nextAccess, iterations;
 	
+	/**
+	 * Constructor.
+	 * @param accesses Access array to iterate.
+	 * @param numAccesses Number of accesses in the array.
+	 */
 	public ReverseAccessIteratorClass(Access[] accesses, int numAccesses) {
 		this.accesses = accesses;
 		this.numAccesses = numAccesses;

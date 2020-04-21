@@ -2,8 +2,13 @@ package users;
 
 import documents.DocumentCollection;
 import documents.DocumentCollectionClass;
-import iterators.DocumentIterator;
 import iterators.OfficialDocumentIterator;
+
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Generic user with various base properties.
+ */
 
 public abstract class AbstractUser implements User {
 	
@@ -14,7 +19,12 @@ public abstract class AbstractUser implements User {
 	private String type, id, level;
 	protected DocumentCollection documents;
 	
-	/* Constructor */
+	/**
+	 * Constructor.
+	 * @param type The type of user.
+	 * @param id The users' ID.
+	 * @param level The users' security clearance level.
+	 */
 	protected AbstractUser(String type, String id, String level) {
 		this.type = type;
 		this.id = id;
@@ -49,13 +59,13 @@ public abstract class AbstractUser implements User {
 	/**
 	 * Creates a new document which is managed by a user with sufficient clearance.
 	 * @param documentName The documents' name.
-	 * @param userIdOwner The users' ID.
+	 * @param owner The user.
 	 * @param documentLevel The documents' clearance level.
 	 * @param documentDescription The documents' description.
 	 */
 	@Override
-	public void uploadDocument(String documentName, String userIdOwner, String documentLevel, String documentDescription) {
-		documents.uploadDocument(documentName, userIdOwner, documentLevel, documentDescription);
+	public void uploadDocument(String documentName, User owner, String documentLevel, String documentDescription) {
+		documents.uploadDocument(documentName, owner, documentLevel, documentDescription);
 	}
 	
 	/**
@@ -79,17 +89,6 @@ public abstract class AbstractUser implements User {
 	}
 	
 	/**
-	 * Edits the specified documents' description.
-	 * @param user The user editing the document.
-	 * @param documentName The documents' name.
-	 * @param description The documents' description.
-	 */
-	@Override
-	public void writeDocument(User user, String documentName, String description) {
-		documents.writeDocument(user, documentName, description);
-	}
-	
-	/**
 	 * Obtains the description from a specified document.
 	 * @param user The user reading the document.
 	 * @param documentName The documents' name.
@@ -98,16 +97,6 @@ public abstract class AbstractUser implements User {
 	@Override
 	public String readDocument(User user, String documentName) {
 		return documents.readDocument(user, documentName);
-	}
-	
-	/**
-	 * Checks if the specified user has clearance to access the document.
-	 * @param writer The user who wants to access the document.
-	 * @param documentName The documents' name.
-	 * @return True if the user has clearance.
-	 */
-	public boolean userHasClearance(User writer, String documentName) {
-		return documents.userHasClearance(writer, documentName);
 	}
 	
 	/**

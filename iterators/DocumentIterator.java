@@ -2,6 +2,12 @@ package iterators;
 
 import documents.Document;
 
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Generic document iterator.
+ */
+
 public interface DocumentIterator {
 	
 	/**

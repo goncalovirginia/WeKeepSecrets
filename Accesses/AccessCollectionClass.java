@@ -1,10 +1,15 @@
 package Accesses;
 
-import documents.Document;
 import iterators.AccessIterator;
 import iterators.AccessIteratorClass;
 import iterators.ReverseAccessIteratorClass;
 import users.User;
+
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Manages a collection of accesses.
+ */
 
 public class AccessCollectionClass implements AccessCollection {
 	

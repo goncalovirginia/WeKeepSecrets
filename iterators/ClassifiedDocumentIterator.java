@@ -2,12 +2,13 @@ package iterators;
 
 import documents.ClassifiedDocument;
 
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Classified document iterator.
+ */
+
 public interface ClassifiedDocumentIterator extends DocumentIterator {
-	
-	/**
-	 * @return True if the is another document to be iterated.
-	 */
-	boolean hasNext();
 	
 	/**
 	 * @return The next document to be iterated.

@@ -5,6 +5,12 @@ import secrets.ClearanceLevel;
 import users.Officer;
 import users.User;
 
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Manages a collection of documents with various types of security levels.
+ */
+
 public class DocumentCollectionClass implements DocumentCollection {
 	
 	/* Constants */
@@ -35,7 +41,8 @@ public class DocumentCollectionClass implements DocumentCollection {
 	 * @return True if the document has a classified clearance level.
 	 */
 	public boolean documentIsClassified(String documentName) {
-		return ClearanceLevel.valueOf(documents[index(documentName)].getLevel().toUpperCase()).isGreaterThan(ClearanceLevel.OFFICIAL);
+		return ClearanceLevel.valueOf(documents[index(documentName)].getLevel().toUpperCase()).hasClearance(
+				ClearanceLevel.CONFIDENTIAL);
 	}
 	
 	/**
@@ -53,18 +60,10 @@ public class DocumentCollectionClass implements DocumentCollection {
 	 * @return True if the user has clearance.
 	 */
 	@Override
-	public boolean userHasClearance(User user, String documentName) {
-		boolean hasClearance = false;
-		int pos = index(documentName);
-		
-		if (ClearanceLevel.valueOf(user.getLevel().toUpperCase()).getValue() >=
-				ClearanceLevel.valueOf(documents[pos].getLevel().toUpperCase()).getValue()) {
-			return true;
-		}
-		else {
-			return (documents[pos] instanceof ClassifiedDocument) &&
+	public boolean userHasClearance(Officer user, String documentName) {
+		return ClearanceLevel.valueOf(user.getLevel().toUpperCase()).hasClearance(
+				ClearanceLevel.valueOf(documents[index(documentName)].getLevel().toUpperCase())) ||
 					((ClassifiedDocument) documents[index(documentName)]).userHasGrant(user.getId());
-		}
 	}
 	
 	/**
@@ -74,8 +73,12 @@ public class DocumentCollectionClass implements DocumentCollection {
 	 * @param description The documents' description.
 	 */
 	@Override
-	public void uploadDocument(String name, String owner, String level, String description) {
-		if (!ClearanceLevel.valueOf(level.toUpperCase()).isGreaterThan(ClearanceLevel.OFFICIAL)) {
+	public void uploadDocument(String name, User owner, String level, String description) {
+		if (isFull()) {
+			resize();
+		}
+		
+		if (!ClearanceLevel.valueOf(level.toUpperCase()).hasClearance(ClearanceLevel.CONFIDENTIAL)) {
 			documents[numDocuments++] = new OfficialDocumentClass(name, owner, level, description);
 		}
 		else {
@@ -91,7 +94,7 @@ public class DocumentCollectionClass implements DocumentCollection {
 	 */
 	@Override
 	public void writeDocument(User user, String documentName, String description) {
-		documents[index(documentName)].writeDocument(user, description);
+		((ClassifiedDocument) documents[index(documentName)]).writeDocument(user, description);
 	}
 	
 	/**

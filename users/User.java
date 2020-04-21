@@ -1,7 +1,12 @@
 package users;
 
-import iterators.DocumentIterator;
 import iterators.OfficialDocumentIterator;
+
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Generic user with various base properties.
+ */
 
 public interface User {
 	
@@ -21,12 +26,13 @@ public interface User {
 	String getLevel();
 	
 	/**
-	 * Uploads a new document with the following characteristics:
-	 * @param documentName The document's name.
-	 * @param documentLevel The document's clearance level.
+	 * Creates a new document which is managed by a user with sufficient clearance.
+	 * @param documentName The documents' name.
+	 * @param owner The user.
+	 * @param documentLevel The documents' clearance level.
 	 * @param documentDescription The documents' description.
 	 */
-	void uploadDocument(String documentName, String userIdOwner, String documentLevel, String documentDescription);
+	void uploadDocument(String documentName, User owner, String documentLevel, String documentDescription);
 	
 	/**
 	 * Checks if the user has a specified document.
@@ -36,17 +42,11 @@ public interface User {
 	boolean hasDocument(String documentName);
 	
 	/**
+	 * Checks if the specified document has a classified clearance level.
+	 * @param documentName The documents' name.
 	 * @return True if the document has a classified clearance level.
 	 */
 	boolean documentIsClassified(String documentName);
-	
-	/**
-	 * Edits the specified documents' description.
-	 * @param user The user editing the document.
-	 * @param documentName The documents' name.
-	 * @param description The documents' description.
-	 */
-	void writeDocument(User user, String documentName, String description);
 	
 	/**
 	 * Obtains the description from a specified document.
@@ -57,20 +57,11 @@ public interface User {
 	String readDocument(User user, String documentName);
 	
 	/**
-	 * Checks if the specified user has clearance to access the document.
-	 * @param writer The user.
-	 * @param documentName The documents' name.
-	 * @return True if the user has clearance.
-	 */
-	boolean userHasClearance(User writer, String documentName);
-	
-	/**
 	 * @return Total number of documents the user is managing.
 	 */
 	int getNumDocuments();
 	
 	/**
-	 * @param documentType Type of documents to iterate.
 	 * @return New document iterator.
 	 */
 	OfficialDocumentIterator newOfficialDocumentIterator();

@@ -1,7 +1,12 @@
 package users;
 
 import iterators.ClassifiedDocumentIterator;
-import iterators.DocumentIterator;
+
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * Type of user with high security clearance, which concedes it various other properties.
+ */
 
 public interface Officer extends User {
 	
@@ -14,6 +19,22 @@ public interface Officer extends User {
 	 * @return The number of times the user has revoked access to other users.
 	 */
 	int getNumRevokes();
+	
+	/**
+	 * Edits the specified documents' description.
+	 * @param user The user editing the document.
+	 * @param documentName The documents' name.
+	 * @param description The documents' description.
+	 */
+	void writeDocument(User user, String documentName, String description);
+	
+	/**
+	 * Checks if the specified user has clearance to access the document.
+	 * @param user The user who wants to access the document.
+	 * @param documentName The documents' name.
+	 * @return True if the user has clearance.
+	 */
+	boolean userHasClearance(Officer user, String documentName);
 	
 	/**
 	 * Checks if the specified user had their last grant to the document revoked.

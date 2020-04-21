@@ -4,19 +4,23 @@ import Accesses.AccessCollection;
 import Accesses.AccessCollectionClass;
 import Accesses.AccessType;
 import iterators.AccessIterator;
-import iterators.AccessIteratorClass;
 import users.Officer;
 import users.User;
+
+/**
+ * @author Goncalo Virginia - 56773
+ *
+ * A type of document with high security clearance, which concedes it various other properties.
+ */
 
 public class ClassifiedDocumentClass extends AbstractDocument implements ClassifiedDocument {
 	
 	/* Variables */
-	private AccessCollection accesses, grants;
+	private AccessCollection grants;
 	
 	/* Constructor */
-	public ClassifiedDocumentClass(String documentName, String userIdOwner, String documentLevel, String documentDescription) {
+	public ClassifiedDocumentClass(String documentName, User userIdOwner, String documentLevel, String documentDescription) {
 		super(documentName, userIdOwner, documentLevel, documentDescription);
-		accesses = new AccessCollectionClass();
 		grants = new AccessCollectionClass();
 	}
 	
@@ -34,6 +38,17 @@ public class ClassifiedDocumentClass extends AbstractDocument implements Classif
 	@Override
 	public int getNumRevokes() {
 		return grants.getNumRevokes();
+	}
+	
+	/**
+	 * Edits the documents' description and adds a new user access.
+	 * @param user The user editing the document.
+	 * @param description The new documents' description.
+	 */
+	@Override
+	public void writeDocument(User user, String description) {
+		accesses.newAccess(user, AccessType.WRITE);
+		this.description = description;
 	}
 	
 	/**
